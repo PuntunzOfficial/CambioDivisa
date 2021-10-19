@@ -4,9 +4,11 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -65,13 +67,27 @@ public class CambioDivisa extends Application {
 		primaryStage.show();
 		
 	}
-		   private Object onCambiarAction(ActionEvent e) {
-	       double cantidad1 = Double.parseDouble(text1.getText());
-	       Divisa divisa1 = combobox1.getSelectionModel().getSelectedItem();
-	       Divisa divisa2 =combobox2.getSelectionModel().getSelectedItem();
-	       double cantidad2 = divisa2.fromEuro(divisa1.toEuro(cantidad1));
-	       text2.setText(""+ cantidad2);
-		return null;
+		   private void onCambiarAction(ActionEvent e) {
+				String numeroLetra = text1.getText();
+
+			   try {
+					int numero = Integer.parseInt(numeroLetra);
+				       double cantidad1 = Double.parseDouble(text1.getText());
+				       Divisa divisa1 = combobox1.getSelectionModel().getSelectedItem();
+				       Divisa divisa2 =combobox2.getSelectionModel().getSelectedItem();
+				       double cantidad2 = divisa2.fromEuro(divisa1.toEuro(cantidad1));
+				       text2.setText(""+ cantidad2);
+					return;
+					
+				} catch (NumberFormatException error){
+					Alert alert = new Alert(AlertType.ERROR);
+					alert.setTitle("CambioDivisa");
+					alert.setHeaderText("Error");
+					alert.setContentText("No has introducido un numero.");
+
+					alert.showAndWait();
+				}
+
 	}
 
 	public static void main(String[] args) {
